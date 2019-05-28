@@ -1,0 +1,54 @@
+<script>
+const documentID = window.location.pathname.split('/')[1];
+
+// If this is a multi-user setup, bookmarks can be stored in LocalStorage
+// (unique to each browser and easy to remove by clearing browser history, so
+// do not rely on these to remember your bookmarks!) If it's a single-user
+// setup, bookmarks are stored in the database. Set this here.
+const bookmarkLocation = 'database'; // or 'localStorage'
+
+function updateOpenDialog() {
+  $('.recent-documents-list').empty();
+  $('.bookmarked-documents-list').empty();
+  var recentDocuments = localStorage.getItem('recentDocuments');
+  recentDocuments = recentDocuments ? JSON.parse(recentDocuments) : [];
+  recentDocuments.sort(function(a,b){
+    return new Date(b.modified) - new Date(a.modified);
+  });
+  recentDocuments = recentDocuments.slice(0,5);
+  recentDocuments.forEach(function(document){
+    var id = document.id;
+    var title = document.title;
+    var modified = document.modified;
+    $('.recent-documents-list').append('<li><a href="/'+id+'">'+title+'</a></li>');
+  })
+
+  if (bookmarkLocation == 'localStorage'){
+    var bookmarkedDocuments = localStorage.getItem('bookmarkedDocuments');
+    bookmarkedDocuments = bookmarkedDocuments ? JSON.parse(bookmarkedDocuments) : [];
+    bookmarkedDocuments.sort(function(a,b){
+      return new Date(b.modified) - new Date(a.modified);
+    });
+    bookmarkedDocuments.forEach(function(document){
+      var id = document.id;
+      var title = document.title;
+      var modified = document.modified;
+      $('.bookmarked-documents-list').append('<li><a href="/'+id+'">'+title+'</a></li>');
+    })
+  }
+  else if (bookmarkLocation == 'database'){
+    $.post('/getbookmarks', function(response){
+      if (response){
+        console.log("Fetching bookmarks")
+        response.bookmarks.forEach(function(document) {
+          var id = document.id;
+          var title = document.title;
+          var modified = document.modified;
+          $('.bookmarked-documents-list').append('<li><a href="/'+id+'">'+title+'</a></li>');
+        })
+      }
+    })
+  }
+}
+updateOpenDialog();
+</script>

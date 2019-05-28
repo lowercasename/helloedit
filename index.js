@@ -13,8 +13,25 @@ const adapter = new FileSync('db.json')
 const db = low(adapter)
 db.defaults({
   documents: [],
+  bookmarks: [],
   count: 0
 }).write()
+
+db.findOrCreate = function(table, query, fill) {
+    const _data = this.get(table);
+    const _query = _data.find(query).value();
+
+    if (_query) {
+        _data
+            .find(query)
+            .assign(fill)
+            .write();
+    } else {
+        _data.push({ ...query, ...fill }).write();
+    }
+
+    return _data.find(query).value();
+}
 
 // Static files
 app.use(express.static('resources'))
@@ -63,6 +80,28 @@ app.post('/update', (req, res) => {
     .write()
   res.status(200).send({ response: "Data saved!" });
 });
+
+app.post('/bookmark', (req,res) => {
+  let fill = {id: req.body.id, title: req.body.title, modified: req.body.modified };
+  let bookmark = db.findOrCreate('bookmarks', { id: req.body.id }, fill);
+  if (bookmark){
+    res.status(200).send({ response: "Document bookmarked!" });
+  }
+});
+
+app.post('/unbookmark', (req,res) => {
+  let bookmark = db.get('bookmarks')
+    .remove({ id: req.body.id })
+    .write()
+  res.status(200).send({ response: "Bookmark deleted!" });
+});
+
+app.post('/getbookmarks', (req,res) => {
+  let bookmarks = db.get('bookmarks')
+    .value();
+  res.status(200).send({ response: "Bookmarks fetched!", bookmarks: bookmarks });
+});
+
 
 app.post('/delete', (req, res) => {
   let document = db.get('documents')

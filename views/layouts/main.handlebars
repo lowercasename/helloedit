@@ -61,36 +61,6 @@
     </div>
   </div>
 
-<script>
-function updateOpenDialog() {
-  $('.recent-documents-list').empty();
-  $('.bookmarked-documents-list').empty();
-  var recentDocuments = localStorage.getItem('recentDocuments');
-  recentDocuments = recentDocuments ? JSON.parse(recentDocuments) : [];
-  recentDocuments.sort(function(a,b){
-    return new Date(b.modified) - new Date(a.modified);
-  });
-  recentDocuments = recentDocuments.slice(0,5);
-  recentDocuments.forEach(function(document){
-    var url = document.url;
-    var title = document.title;
-    var modified = document.modified;
-    $('.recent-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
-  })
-
-  var bookmarkedDocuments = localStorage.getItem('bookmarkedDocuments');
-  bookmarkedDocuments = bookmarkedDocuments ? JSON.parse(bookmarkedDocuments) : [];
-  bookmarkedDocuments.sort(function(a,b){
-    return new Date(b.modified) - new Date(a.modified);
-  });
-  bookmarkedDocuments.forEach(function(document){
-    var url = document.url;
-    var title = document.title;
-    var modified = document.modified;
-    $('.bookmarked-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
-  })
-}
-updateOpenDialog();
-</script>
+  {{> basescripts }}
 
 </html>

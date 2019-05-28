@@ -17,7 +17,7 @@ var easyMDE = new EasyMDE({
 
 function saveDocument(action){
   $('.autosave').html("...").css("color","black")
-  $.post('/update', {document: '{{document.id}}', title: $('.title').val(), content: easyMDE.value()}, function(response){
+  $.post('/update', {document: documentID, title: $('.title').val(), content: easyMDE.value()}, function(response){
     if (response){
       var dt = new Date();
       var time = dt.getHours() + ":" + (dt.getMinutes()<10?'0':'') + dt.getMinutes();
@@ -36,7 +36,19 @@ function saveDocument(action){
   updateLocalStorage('recentDocuments');
 }
 
-// Recent files storage
+function bookmarkDocument(){
+  var documentTitle = $('.title').val();
+  var now = new Date();
+  $.post('/bookmark', {id: documentID, title: documentTitle, modified: now}, function(response){
+    if (response){
+      console.log("Bookmarked!")
+    }
+    else {
+      console.log("Failed to bookmark!")
+    }
+  });
+}
+
 function updateLocalStorage(list, operation = "add"){
   if (list == 'recentDocuments'){
     targets = {
@@ -45,20 +57,25 @@ function updateLocalStorage(list, operation = "add"){
     }
   }
   else if (list == 'bookmarkedDocuments'){
-    targets = {
-      element: $('.bookmarked-documents-list'),
-      localStorageItem: 'bookmarkedDocuments',
+    if (bookmarkLocation == 'localStorage') {
+      targets = {
+        element: $('.bookmarked-documents-list'),
+        localStorageItem: 'bookmarkedDocuments',
+      }
+    }
+    else if (bookmarkLocation == 'database'){
+      bookmarkDocument();
+      return;
     }
   }
   var documents = localStorage.getItem(targets.localStorageItem);
   documents = documents ? JSON.parse(documents) : [];
-  var documentURL = window.location.pathname;
   var documentTitle = $('.title').val();
   var now = new Date();
-  if (documents.filter(e => e.url === documentURL).length === 0) {
+  if (documents.filter(e => e.id === documentID).length === 0) {
     // Array does not contain this document
     if (operation === "add"){
-      documents.push({'url': documentURL, 'title': documentTitle, 'modified': now})
+      documents.push({'id': documentID, 'title': documentTitle, 'modified': now})
       documents = documents.slice(-30);
       localStorage.setItem(targets.localStorageItem, JSON.stringify(documents));
     }
@@ -66,20 +83,30 @@ function updateLocalStorage(list, operation = "add"){
   else {
     if (operation === "add") {
       documents.forEach(function(document) {
-        if (document.url === documentURL) {
+        if (document.id === documentID) {
           if (list == 'recentDocuments') {
-            console.log("It's recentDocuments")
-            var bookmarks = localStorage.getItem('bookmarkedDocuments');
-            bookmarks = bookmarks ? JSON.parse(bookmarks) : [];
-            console.log(bookmarks)
-            bookmarks.forEach(function(bookmark) {
-              if (bookmark.url === documentURL) {
-                console.log("Updating bookmark")
-                bookmark.title = documentTitle;
-                bookmark.modified = now;
-              }
-            });
-            localStorage.setItem('bookmarkedDocuments', JSON.stringify(bookmarks));
+            if (bookmarkLocation == 'localStorage'){
+              var bookmarks = localStorage.getItem('bookmarkedDocuments');
+              bookmarks = bookmarks ? JSON.parse(bookmarks) : [];
+              bookmarks.forEach(function(bookmark) {
+                if (bookmark.id === documentID) {
+                  bookmark.title = documentTitle;
+                  bookmark.modified = now;
+                }
+              });
+              localStorage.setItem('bookmarkedDocuments', JSON.stringify(bookmarks));
+            }
+            else if (bookmarkLocation == "database"){
+              $.post('/getbookmarks', function(response){
+                if (response){
+                  response.bookmarks.forEach(function(document) {
+                    if (document.id === documentID) {
+                      bookmarkDocument();
+                    }
+                  })
+                }
+              })
+            }
           }
           document.title = documentTitle;
           document.modified = now;
@@ -88,10 +115,9 @@ function updateLocalStorage(list, operation = "add"){
     }
     else if (operation === "delete") {
       documents = $.grep(documents, function(e){
-        return e.url != documentURL;
+        return e.id != documentID;
       });
     }
-    localStorage.setItem(targets.localStorageItem, JSON.stringify(documents));
   }
 }
 
@@ -225,7 +251,7 @@ $('.open').click(function(event){
 })
 $('.delete').click(function(){
   if (window.confirm("Are you sure you want to delete this document? This is irreversible!")) {
-    $.post('/delete', {document: '{{document.id}}'}, function(response){
+    $.post('/delete', {document: documentID}, function(response){
       if (response){
         updateLocalStorage('bookmarkedDocuments','delete')
         updateLocalStorage('recentDocuments','delete')
@@ -238,6 +264,11 @@ $('.quit').click(function(){
   saveDocument('quit');
 })
 $('.bookmark').click(function(){
-  updateLocalStorage('bookmarkedDocuments')
+  if (bookmarkLocation == 'localStorage'){
+    updateLocalStorage('bookmarkedDocuments')
+  }
+  else if (bookmarkLocation == 'database'){
+    bookmarkDocument();
+  }
 })
 </script>
