@@ -102,6 +102,18 @@ $('.action-button')
   $(this).removeClass("active")
 })
 
+$('.toggler')
+.mousedown(function(){
+  $(this).css({"color":"transparent","background":"url('images/star.png')"});
+})
+.mouseup(function(){
+  $(this).css({"color":"black","background":"white"});
+})
+.mouseleave(function(){
+  $(this).css({"color":"black","background":"white"});
+})
+
+
 updateOpenDialog();
 </script>
 
