@@ -1,7 +1,7 @@
 @font-face {
-    font-family: 'ChiKareGo';
-    src: url('../fonts/ChiKareGo.woff2') format('woff2'),
-        url('../fonts/ChiKareGo.woff') format('woff');
+    font-family: 'ChiKareGo2';
+    src: url('../fonts/ChiKareGo2.woff2') format('woff2'),
+        url('../fonts/ChiKareGo2.woff') format('woff');
     font-weight: 500;
     font-style: normal;
 }
@@ -41,6 +41,7 @@ strong, b, .cm-header, .cm-strong {font-weight:600 !important;}
 body {
   /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; */
   background: url('../images/dots.png');
+  background-size: 8px 8px;
   padding: 10px;
 }
 ::selection,
@@ -87,13 +88,23 @@ section.editor-container {
   align-items: center;
 }
 .title {
-  font-family: 'ChiKareGo', monospace;
+  font-family: 'ChiKareGo2', monospace;
   font-size: 24px;
   background: white;
   padding: 0px 10px;
-  border: 0;
+  /* border: 0; */
   text-align: center;
-  min-width: 160px;
+  min-width: 120px;
+  height: 36px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.title br {
+  display:none;
+}
+.title * {
+  display:inline;
+  white-space:nowrap;
 }
 .minimise-button-wrapper,
 .close-button-wrapper {
@@ -135,7 +146,7 @@ section.editor-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 19px;
   background: white;
 }
 .editor-toolbar button:active,
@@ -163,10 +174,39 @@ main {
   border-top: 2px solid black;
   padding: 20px;
 }
-.CodeMirror-vscrollbar {
+
+.CodeMirror-simplescroll-vertical {
+  width: 26px;
   background: url('../images/dots-wide.png');
   border-left: 2px solid black;
-  width: 25px !important;
+  border-radius: 0;
+}
+.CodeMirror-simplescroll-vertical::before {
+  background-image: url('../images/arrow-up.png');
+  background-size: 26px 26px;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  content:"";
+  position: fixed;
+  z-index: 999999;
+}
+.CodeMirror-simplescroll-vertical::after {
+  background-image: url('../images/arrow-down.png');
+  background-size: 26px 26px;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  content:"";
+  position: absolute;
+  bottom: 0;
+  z-index: 999999;
+}
+.CodeMirror-simplescroll-vertical div {
+  background: white;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-radius: 0;
 }
 .CodeMirror-scroll {
   display: flex;
@@ -203,7 +243,7 @@ main {
 }
 .editor-statusbar {
   display: flex;
-  font-family: 'ChiKareGo', monospace;
+  font-family: 'ChiKareGo2', monospace;
   font-size: 24px;
   border-top: 2px solid black;
   height: 40px;
@@ -235,6 +275,7 @@ main {
   width: 42px;
   height: 40px;
   background: url('../images/button.png');
+  background-size: contain;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,6 +286,7 @@ main {
 }
 .action-button.active {
   background: url('../images/button-pressed.png');
+  background-size: contain;
 }
 .action-spacer {
   width: 20px;
@@ -254,7 +296,7 @@ main {
 }
 
 .welcome-message {
-  font-family: 'ChiKareGo', monospace;
+  font-family: 'ChiKareGo2', monospace;
   font-size: 24px;
   border-radius: 0;
   box-shadow: none;
@@ -277,7 +319,7 @@ main {
   height: 80px;
 }
 .modal {
-  font-family: 'ChiKareGo', monospace;
+  font-family: 'ChiKareGo2', monospace;
   font-size: 24px;
   border-radius: 0;
   box-shadow: none;
@@ -300,7 +342,6 @@ main {
 .modal-body a:visited {
   color: black;
   text-decoration: none;
-  border-bottom: 2px solid black;
 }
 .modal-button,
 .modal-button:visited {
@@ -308,6 +349,7 @@ main {
   height: 40px;
   width: 118px;
   background: url('../images/modal-button.png');
+  background-size: contain;
   color: black !important;
   text-decoration: none;
   padding: 6px;
@@ -317,14 +359,17 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: none !important;
 }
 .modal-button:active {
   background: url('../images/modal-button-pressed.png');
+  background-size: contain;
   color: white !important;
 }
 .modal a.close-modal {
   display: none;
+}
+#info-modal a:not(.modal-button) {
+  border-bottom: 2px solid black;
 }
 #file-import {
   display: none;
@@ -393,4 +438,8 @@ code {
 .recent-documents-list a:hover {
   color: white !important;
   background: black;
+}
+
+.toggler {
+  background-size: contain !important;
 }

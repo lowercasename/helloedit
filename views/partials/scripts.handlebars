@@ -17,7 +17,7 @@ var easyMDE = new EasyMDE({
 
 function saveDocument(action){
   $('.autosave').html($('.autosave').html()+"...").css("color","black")
-  $.post('/update', {document: '{{document.id}}', title: $('.title').val(), content: easyMDE.value()}, function(response){
+  $.post('/update', {document: '{{document.id}}', title: $('.title').text(), content: easyMDE.value()}, function(response){
     if (response){
       var dt = new Date();
       var time = dt.getHours() + ":" + (dt.getMinutes()<10?'0':'') + dt.getMinutes();
@@ -53,7 +53,7 @@ function updateLocalStorage(list, operation = "add"){
   var documents = localStorage.getItem(targets.localStorageItem);
   documents = documents ? JSON.parse(documents) : [];
   var documentURL = window.location.pathname;
-  var documentTitle = $('.title').val();
+  var documentTitle = $('.title').text().replace(/<(?:.|\n)*?>/gm, '');
   var now = new Date();
   if (documents.filter(e => e.url === documentURL).length === 0) {
     // Array does not contain this document
@@ -101,7 +101,7 @@ $(function() {
   window.setInterval(function(){
     saveDocument();
   }, 30000);
-  titleWidth = $('.title').val().length * 11
+  // titleWidth = $('.title').text().length * 11
   $('.title').css({"width": titleWidth.toString() + "px"});
   // $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left': '-20px', 'text-indent': '20px'});
 });
@@ -110,11 +110,24 @@ easyMDE.codemirror.on("change", function(){
 	// $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left':'-20px', 'text-indent':'20px'});
 });
 
-$('.title').bind('input blur',function(){
-  var node = $(this);
-  node.val(node.val().replace(/[^a-zA-Z0-9 ]+/g,'') );
-  width = node.val().length * 11
-  node.css({"width": width.toString() + "px"});
+$('.title').bind('keypress', function (event) {
+    var keyCode = event.keyCode || event.which
+    // Don't validate the input if below arrow, delete and backspace keys were pressed
+    if (keyCode == 8 || (keyCode >= 35 && keyCode <= 40)) { // Left / Up / Right / Down Arrow, Backspace, Delete keys
+        return;
+    }
+
+    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+
+    if (!(regex.test(key)) || ($('.title').text().length > 49)) {
+        event.preventDefault();
+        return false;
+    }
+});
+$('.title').on('paste',function(e) {
+    e.preventDefault();
+    return false;
 });
 
 $('.fullscreen').on('click', function(){

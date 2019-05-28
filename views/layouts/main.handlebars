@@ -20,6 +20,7 @@
     <script src="highlightjs/highlight.pack.js"></script>
 
     <link rel="stylesheet" href="easymde/dist/easymde.min.css">
+    <link rel="stylesheet" href="css/simplescrollbars.css">
     <script src="/js/easymde.min.js"></script>
 
     <script src="jquery-modal/jquery.modal.min.js"></script>
@@ -61,60 +62,6 @@
     </div>
   </div>
 
-<script>
-function updateOpenDialog() {
-  $('.recent-documents-list').empty();
-  $('.bookmarked-documents-list').empty();
-  var recentDocuments = localStorage.getItem('recentDocuments');
-  recentDocuments = recentDocuments ? JSON.parse(recentDocuments) : [];
-  recentDocuments.sort(function(a,b){
-    return new Date(b.modified) - new Date(a.modified);
-  });
-  recentDocuments = recentDocuments.slice(0,5);
-  recentDocuments.forEach(function(document){
-    var url = document.url;
-    var title = document.title;
-    var modified = document.modified;
-    $('.recent-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
-  })
-
-  var bookmarkedDocuments = localStorage.getItem('bookmarkedDocuments');
-  bookmarkedDocuments = bookmarkedDocuments ? JSON.parse(bookmarkedDocuments) : [];
-  bookmarkedDocuments.sort(function(a,b){
-    return new Date(b.modified) - new Date(a.modified);
-  });
-  bookmarkedDocuments.forEach(function(document){
-    var url = document.url;
-    var title = document.title;
-    var modified = document.modified;
-    $('.bookmarked-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
-  })
-}
-
-$('.action-button')
-.mousedown(function(){
-  $(this).addClass("active")
-})
-.mouseup(function(){
-  $(this).removeClass("active")
-})
-.mouseleave(function(){
-  $(this).removeClass("active")
-})
-
-$('.toggler')
-.mousedown(function(){
-  $(this).css({"color":"transparent","background":"url('images/star.png')"});
-})
-.mouseup(function(){
-  $(this).css({"color":"black","background":"white"});
-})
-.mouseleave(function(){
-  $(this).css({"color":"black","background":"white"});
-})
-
-
-updateOpenDialog();
-</script>
+{{> basescripts}}
 
 </html>

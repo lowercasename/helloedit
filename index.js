@@ -57,9 +57,10 @@ app.get('/:documentId', (req, res) => {
 });
 
 app.post('/update', (req, res) => {
+  let title = req.body.title.replace(/<(?:.|\n)*?>/gm, '');
   let document = db.get('documents')
     .find({ id: req.body.document })
-  	.assign({title: req.body.title, content: req.body.content})
+  	.assign({title: title, content: req.body.content})
     .write()
   res.status(200).send({ response: "Data saved!" });
 });
