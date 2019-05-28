@@ -90,6 +90,18 @@ function updateOpenDialog() {
     $('.bookmarked-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
   })
 }
+
+$('.action-button')
+.mousedown(function(){
+  $(this).addClass("active")
+})
+.mouseup(function(){
+  $(this).removeClass("active")
+})
+.mouseleave(function(){
+  $(this).removeClass("active")
+})
+
 updateOpenDialog();
 </script>
 

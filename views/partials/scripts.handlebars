@@ -16,7 +16,7 @@ var easyMDE = new EasyMDE({
 });
 
 function saveDocument(action){
-  $('.autosave').html("...").css("color","black")
+  $('.autosave').html($('.autosave').html()+"...").css("color","black")
   $.post('/update', {document: '{{document.id}}', title: $('.title').val(), content: easyMDE.value()}, function(response){
     if (response){
       var dt = new Date();
@@ -160,16 +160,6 @@ function onFullScreenChange() {
   }
 }
 
-$('.action-button')
-.mousedown(function(){
-  $(this).addClass("active")
-})
-.mouseup(function(){
-  $(this).removeClass("active")
-})
-.mouseleave(function(){
-  $(this).removeClass("active")
-})
 $('.close-button').click(function(){
   $('.action-bar').slideToggle(100);
   icon = $(this).find('i');
@@ -199,16 +189,6 @@ $('.minimise-button').click(function(){
   $('.editor-toolbar').css("background","#eee")
 }, function(){
   $('.editor-toolbar').css("background","#fff")
-})
-$('.toggler')
-.mousedown(function(){
-  $(this).css({"color":"transparent","background":"url('images/star.png')"});
-})
-.mouseup(function(){
-  $(this).css({"color":"black","background":"white"});
-})
-.mouseleave(function(){
-  $(this).css({"color":"black","background":"white"});
 })
 $('.save').click(function(){
   saveDocument();
