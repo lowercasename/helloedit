@@ -298,7 +298,9 @@ main {
 .modal-body a,
 .modal-body a:active,
 .modal-body a:visited {
-  color: blue;
+  color: black;
+  text-decoration: none;
+  border-bottom: 2px solid black;
 }
 .modal-button,
 .modal-button:visited {
@@ -312,6 +314,10 @@ main {
   box-sizing: border-box;
   text-align: center;
   margin-top:15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: none !important;
 }
 .modal-button:active {
   background: url('../images/modal-button-pressed.png');
