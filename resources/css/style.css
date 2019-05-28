@@ -384,6 +384,8 @@ main {
 }
 .cm-formatting, .cm-quote.cm-formatting {
   color: #c7c5c5 !important;
+}
+.cm-quote.cm-formatting {
   font-weight: 300;
 }
 .cm-quote {
