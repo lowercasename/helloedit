@@ -8,4 +8,4 @@ Below the hood HelloEdit is simply an (opinionated) wrapper for [EasyMDE](https:
 
 ## Installing
 
-HelloEdit can be installed and used locally as a personal notebook or text editor. First, clone this repository to a local directory and navigate to it in a terminal, run `npm install`, then run `npm start` whenever you want to run HelloEdit
+HelloEdit can be installed and used locally as a personal notebook or text editor. First, clone this repository to a local directory and navigate to it in a terminal, run `npm install`, then run `npm start` whenever you want to run HelloEdit.
