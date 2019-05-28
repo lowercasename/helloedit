@@ -1,0 +1,243 @@
+<script>
+var easyMDE = new EasyMDE({
+  autoDownloadFontAwesome: false,
+  autofocus: true,
+  blockStyles: {
+    italic: '_'
+  },
+  hideIcons: ['fullscreen', 'side-by-side'],
+  placeholder: 'Amazingly few discotheques provide jukeboxes.',
+  forceSync: true,
+  spellChecker: false,
+  status: ["words", "autosave"],
+  renderingConfig: {
+		codeSyntaxHighlighting: true
+	}
+});
+
+function saveDocument(action){
+  $('.autosave').html("...").css("color","black")
+  $.post('/update', {document: '{{document.id}}', title: $('.title').val(), content: easyMDE.value()}, function(response){
+    if (response){
+      var dt = new Date();
+      var time = dt.getHours() + ":" + (dt.getMinutes()<10?'0':'') + dt.getMinutes();
+      $('.autosave').html("Saved at "+time);
+      if (action == "quit"){
+        window.location.href = "/";
+      }
+      else if (action == "new"){
+        window.location.href = "/new";
+      }
+    }
+    else {
+      $('.autosave').html("Error saving document!").css("color","red")
+    }
+  });
+  updateLocalStorage('recentDocuments');
+}
+
+// Recent files storage
+function updateLocalStorage(list, operation = "add"){
+  if (list == 'recentDocuments'){
+    targets = {
+      element: $('.recent-documents-list'),
+      localStorageItem: 'recentDocuments',
+    }
+  }
+  else if (list == 'bookmarkedDocuments'){
+    targets = {
+      element: $('.bookmarked-documents-list'),
+      localStorageItem: 'bookmarkedDocuments',
+    }
+  }
+  var documents = localStorage.getItem(targets.localStorageItem);
+  documents = documents ? JSON.parse(documents) : [];
+  var documentURL = window.location.pathname;
+  var documentTitle = $('.title').val();
+  var now = new Date();
+  if (documents.filter(e => e.url === documentURL).length === 0) {
+    // Array does not contain this document
+    if (operation === "add"){
+      documents.push({'url': documentURL, 'title': documentTitle, 'modified': now})
+      documents = documents.slice(-30);
+      localStorage.setItem(targets.localStorageItem, JSON.stringify(documents));
+    }
+  }
+  else {
+    if (operation === "add") {
+      documents.forEach(function(document) {
+        if (document.url === documentURL) {
+          if (list == 'recentDocuments') {
+            console.log("It's recentDocuments")
+            var bookmarks = localStorage.getItem('bookmarkedDocuments');
+            bookmarks = bookmarks ? JSON.parse(bookmarks) : [];
+            console.log(bookmarks)
+            bookmarks.forEach(function(bookmark) {
+              if (bookmark.url === documentURL) {
+                console.log("Updating bookmark")
+                bookmark.title = documentTitle;
+                bookmark.modified = now;
+              }
+            });
+            localStorage.setItem('bookmarkedDocuments', JSON.stringify(bookmarks));
+          }
+          document.title = documentTitle;
+          document.modified = now;
+        }
+      });
+    }
+    else if (operation === "delete") {
+      documents = $.grep(documents, function(e){
+        return e.url != documentURL;
+      });
+    }
+    localStorage.setItem(targets.localStorageItem, JSON.stringify(documents));
+  }
+}
+
+$(function() {
+  updateLocalStorage('recentDocuments');
+  $('.autosave').html("&nbsp;")
+  window.setInterval(function(){
+    saveDocument();
+  }, 30000);
+  titleWidth = $('.title').val().length * 10
+  $('.title').css({"width": titleWidth.toString() + "px"});
+  // $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left': '-20px', 'text-indent': '20px'});
+});
+
+easyMDE.codemirror.on("change", function(){
+	// $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left':'-20px', 'text-indent':'20px'});
+});
+
+$('.title').bind('input blur',function(){
+  var node = $(this);
+  node.val(node.val().replace(/[^a-zA-Z0-9 ]+/g,'') );
+  width = node.val().length * 11
+  node.css({"width": width.toString() + "px"});
+});
+
+$('.fullscreen').on('click', function(){
+  fullscreenButton = $(this);
+  if (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement
+  ) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    setTimeout(function(){fullscreenButton.html('<i class="fas fa-expand-arrows-alt"></i>')}, 100);
+  } else {
+    element = $('.editor-container').get(0);
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    }
+    setTimeout(function(){fullscreenButton.html('<i class="fas fa-compress-arrows-alt"></i>')}, 100);
+  }
+});
+document.addEventListener("fullscreenchange", onFullScreenChange, false);
+document.addEventListener("webkitfullscreenchange", onFullScreenChange, false);
+document.addEventListener("mozfullscreenchange", onFullScreenChange, false);
+
+function onFullScreenChange() {
+  var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+  if (!fullscreenElement){
+    $('.fullscreen').html('<i class="fas fa-expand-arrows-alt"></i>');
+  }
+}
+
+$('.action-button')
+.mousedown(function(){
+  $(this).addClass("active")
+})
+.mouseup(function(){
+  $(this).removeClass("active")
+})
+.mouseleave(function(){
+  $(this).removeClass("active")
+})
+$('.close-button').click(function(){
+  $('.action-bar').slideToggle(100);
+  icon = $(this).find('i');
+  if (icon.hasClass("fa-caret-down")){
+    icon.removeClass("fa-caret-down").addClass("fa-caret-up");
+  }
+  else {
+    icon.removeClass("fa-caret-up").addClass("fa-caret-down");
+  }
+})
+.hover(function(){
+  $('.action-bar').css("background","#eee")
+}, function(){
+  $('.action-bar').css("background","#fff")
+})
+$('.minimise-button').click(function(){
+  $('.editor-toolbar').slideToggle(100);
+  icon = $(this).find('i');
+  if (icon.hasClass("fa-caret-down")){
+    icon.removeClass("fa-caret-down").addClass("fa-caret-up");
+  }
+  else {
+    icon.removeClass("fa-caret-up").addClass("fa-caret-down");
+  }
+})
+.hover(function(){
+  $('.editor-toolbar').css("background","#eee")
+}, function(){
+  $('.editor-toolbar').css("background","#fff")
+})
+$('.toggler')
+.mousedown(function(){
+  $(this).css({"color":"transparent","background":"url('images/star.png')"});
+})
+.mouseup(function(){
+  $(this).css({"color":"black","background":"white"});
+})
+.mouseleave(function(){
+  $(this).css({"color":"black","background":"white"});
+})
+$('.save').click(function(){
+  saveDocument();
+})
+$('.new').click(function(){
+  saveDocument('new');
+})
+$('.open').click(function(event){
+  event.preventDefault();
+  this.blur(); // Manually remove focus from clicked link.
+  saveDocument();
+  updateOpenDialog();
+  $(html).appendTo('body').modal();
+})
+$('.delete').click(function(){
+  if (window.confirm("Are you sure you want to delete this document? This is irreversible!")) {
+    $.post('/delete', {document: '{{document.id}}'}, function(response){
+      if (response){
+        updateLocalStorage('bookmarkedDocuments','delete')
+        updateLocalStorage('recentDocuments','delete')
+        window.location.href = "/";
+      }
+    })
+  }
+})
+$('.quit').click(function(){
+  saveDocument('quit');
+})
+$('.bookmark').click(function(){
+  updateLocalStorage('bookmarkedDocuments')
+})
+</script>

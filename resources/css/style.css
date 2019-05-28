@@ -1,0 +1,390 @@
+@font-face {
+    font-family: 'ChiKareGo';
+    src: url('../fonts/ChiKareGo.woff2') format('woff2'),
+        url('../fonts/ChiKareGo.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+html {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 19px;
+  line-height: 1.45;
+}
+p {margin-bottom: 1.48  em;}
+h1, h2, h3, h4, h5 {
+  margin: 2.75rem 0 1rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 1.802em;
+}
+
+h2 {font-size: 1.602em;}
+
+h3 {font-size: 1.424em;}
+
+h4 {font-size: 1.266em;}
+
+h5 {font-size: 1.125em;}
+
+h6 {font-size: 1em;}
+
+small, .text_small, blockquote {font-size: 0.889em;}
+
+strong, b, .cm-header, .cm-strong {font-weight:600 !important;}
+
+body {
+  /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; */
+  background: url('../images/dots.png');
+  padding: 10px;
+}
+::selection,
+::-moz-selection,
+.CodeMirror-selectedtext {
+  color: white !important;
+  background: black;
+}
+.CodeMirror-selected {
+  background: black !important;
+}
+section.editor-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 2px solid black;
+  box-shadow: 3px 3px black;
+  background: white;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.generic-container {
+  width: 100%;
+  display: block;
+  border: 2px solid black;
+  box-shadow: 3px 3px black;
+  background: white;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.title-bar {
+  box-sizing: border-box;
+  height: 24px;
+  display: flex;
+  justify-content: space-between;
+  margin: 7px 2px 5px 2px;
+  background-image: linear-gradient(0deg, #ffffff 25%, #000000 25%, #000000 50%, #fff 50%, #fff 50%, #ffffff 50%, #ffffff 75%, #000000 75%, #000000 100%, #fff 100%, #fff 100%);
+  background-size: 8.00px 8.00px;
+  padding: 5px 15px;
+  align-items: center;
+}
+.title {
+  font-family: 'ChiKareGo', monospace;
+  font-size: 24px;
+  background: white;
+  padding: 0px 10px;
+  border: 0;
+  text-align: center;
+  min-width: 160px;
+}
+.minimise-button-wrapper,
+.close-button-wrapper {
+  height:25px;
+  width: 29px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.minimise-button,
+.close-button {
+  border: 2px solid black;
+  height: 20px;
+  width: 20px;
+  position: relative;
+  top: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editor-toolbar {
+  border-top: 2px solid black;
+  box-sizing: border-box;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-radius: 0;
+}
+.editor-toolbar button {
+  width: 35px;
+  height: 26px;
+  border-image-slice: 2 2 2 2;
+  border-image-width: 2px 2px 2px 2px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url('../images/border.png');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: white;
+}
+.editor-toolbar button:active,
+.editor-toolbar button.active {
+  background: black;
+  color: white;
+}
+.separator {
+  margin: 0 10px !important;
+  border: 0 !important;
+}
+button[type="button"] + button[type="button"] {
+  border-image-width: 2px 2px 2px 0;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  flex: 1;
+}
+.CodeMirror {
+  border: 0;
+  flex: 1;
+  border-top: 2px solid black;
+  padding: 20px;
+}
+.CodeMirror-vscrollbar {
+  background: url('../images/dots-wide.png');
+  border-left: 2px solid black;
+  width: 25px !important;
+}
+.CodeMirror-scroll {
+  display: flex;
+  justify-content: center;
+}
+.CodeMirror-sizer {
+  max-width: 960px;
+  flex: 1;
+  min-width: 280px;
+}
+.editor-preview {
+  padding: 24px;
+  background: #fff;
+}
+.editor-preview > * {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.editor-preview pre {
+  margin-left: auto;
+  margin-right: auto;
+}
+.editor-preview blockquote > p {
+  padding: 0 2rem;
+}
+.cm-link {
+  color: black !important;
+  text-decoration: none !important;
+}
+.cm-url {
+  color: rgb(0, 0, 238) !important;
+  text-decoration: underline !important;
+}
+.editor-statusbar {
+  display: flex;
+  font-family: 'ChiKareGo', monospace;
+  font-size: 24px;
+  border-top: 2px solid black;
+  height: 40px;
+  padding: 0;
+  text-align: left;
+  line-height: 40px;
+}
+.editor-statusbar span {
+  flex: 1;
+  color: black;
+  height: 100% !important;
+  text-align: left;
+  margin: 0;
+  padding-left: 20px;
+}
+.editor-statusbar span:not(:last-of-type){
+  border-right: 2px solid black;
+}
+.action-bar {
+  box-sizing: border-box;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 15px;
+  align-items: center;
+  border-top: 2px solid black;
+}
+.action-button {
+  width: 42px;
+  height: 40px;
+  background: url('../images/button.png');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  margin-right: -2px;
+  color: black;
+  text-decoration: none;
+}
+.action-button.active {
+  background: url('../images/button-pressed.png');
+}
+.action-spacer {
+  width: 20px;
+}
+.blocker {
+  background-color: transparent;
+}
+
+.welcome-message {
+  font-family: 'ChiKareGo', monospace;
+  font-size: 24px;
+  border-radius: 0;
+  box-shadow: none;
+  border: 2px solid black;
+  padding: 3px;
+  background: white;
+  max-width: 720px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+.welcome-message>main {
+  border: 4px solid black;
+  padding: 30px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.welcome-message img {
+  width: 60px;
+  height: 80px;
+}
+.modal {
+  font-family: 'ChiKareGo', monospace;
+  font-size: 24px;
+  border-radius: 0;
+  box-shadow: none;
+  border: 2px solid black;
+  padding: 3px;
+  max-width: 620px;
+}
+.modal-body {
+  border: 4px solid black;
+  padding: 30px;
+}
+.modal-body p:first-of-type {
+  margin-top: 0;
+}
+.modal-body p:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+.modal-body a,
+.modal-body a:active,
+.modal-body a:visited {
+  color: blue;
+}
+.modal-button,
+.modal-button:visited {
+  display: inline-block;
+  height: 40px;
+  width: 118px;
+  background: url('../images/modal-button.png');
+  color: black !important;
+  text-decoration: none;
+  padding: 6px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top:15px;
+}
+.modal-button:active {
+  background: url('../images/modal-button-pressed.png');
+  color: white !important;
+}
+.modal a.close-modal {
+  display: none;
+}
+#file-import {
+  display: none;
+}
+.cm-header, .cm-formatting-header {
+  font-size: 1rem !important;
+  line-height: 1.45 !important;
+  text-decoration: underline;
+}
+.cm-formatting-header {
+  text-decoration: none;
+}
+.cm-formatting, .cm-quote.cm-formatting {
+  color: #c7c5c5 !important;
+  font-weight: 300;
+}
+.cm-quote {
+  color: #666 !important;
+  font-style: normal !important;
+  font-weight: 300;
+}
+.cm-quote.cm-strong {
+  font-weight: 500 !important;
+}
+.cm-quote.cm-em {
+  font-style: italic !important;
+}
+.cm-formatting-list {
+  color: black !important;
+}
+.cm-comment {
+  background: white !important;
+  font-family: 'Fira Mono';
+  font-size: smaller;
+}
+code {
+  font-family: 'Fira Mono';
+  font-size: smaller;
+}
+.editor-statusbar .words::before {
+  content: '' !important;
+}
+.editor-statusbar .words::after {
+  content: ' words' !important;
+}
+.recent-documents-list,
+.bookmarked-documents-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bookmarked-documents-list li,
+.recent-documents-list li {
+  width: 100%;
+}
+.bookmarked-documents-list a,
+.recent-documents-list a {
+  color: black !important;
+  text-decoration: none;
+  width: 100%;
+  display: block;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+.bookmarked-documents-list a:hover,
+.recent-documents-list a:hover {
+  color: white !important;
+  background: black;
+}

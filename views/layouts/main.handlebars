@@ -1,0 +1,96 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+
+  <head>
+    <title>HelloEdit {{#if document.title}}| {{document.title}}{{/if}}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preload" href="images/button-pressed.png" as="image">
+    <link rel="preload" href="images/modal-button-pressed.png" as="image">
+    <link rel="preload" href="images/star.png" as="image">
+
+    <link rel="stylesheet" href="@fortawesome/fontawesome-free/css/all.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700|Fira+Sans:300,300i,400,400i,500,500i,600,600i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext" rel="stylesheet">
+
+    <script src="jquery/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="highlightjs/styles/solarized-light.css">
+    <script src="highlightjs/highlight.pack.js"></script>
+
+    <link rel="stylesheet" href="easymde/dist/easymde.min.css">
+    <script src="/js/easymde.min.js"></script>
+
+    <script src="jquery-modal/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="jquery-modal/jquery.modal.min.css" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    {{{ body }}}
+  </body>
+
+  <div id="info-modal" class="modal">
+    <div class="modal-body">
+      <p>
+        HelloEdit was designed by <a href="https://raphaelkabo.com/">Raphael Kabo</a> as an homage to Microsoft Word 5.1 and Macintosh System 7, and therefore to a childhood sitting in the laundry, where the Macintosh SE inexplicably was, writing school assignments about the reproductive life cycle of frogs. It takes Kevin Lipe at his literal word when he says that <a href="https://512pixels.net/2011/05/markdown-new-word51/">"Markdown is the new Word 5.1"</a>.
+      </p>
+      <p>
+        In the backend, this is just an opinionated wrapper for <a href="https://github.com/Ionaru/easy-markdown-editor">EasyMDE</a> by Jeroen Akkerman. This font is <a href="http://www.suppertime.co.uk/blogmywiki/2017/04/chicago/">ChiKareGo</a>, designed by Giles Booth as an homage to the <a href="https://en.wikipedia.org/wiki/Chicago_(typeface)">Chicago typeface</a> (designed by Susan Kare) which was used as the system font in Classic Mac OS.
+      </p>
+      <p>
+        The interface also uses <a href="https://fontawesome.com/">Font Awesome icons</a>. The button sprites are handmade.
+      </p>
+      <a href="#" class="modal-button" rel="modal:close">Close</a>
+    </div>
+  </div>
+
+  <div id="recent-documents-modal" class="modal">
+    <div class="modal-body">
+      <p style="margin-bottom: 0.25em;border-bottom: 2px solid black;padding-bottom: 0.25em;">
+        <i class="far fa-folder" style="position:relative;top:2px;"></i> Recent Documents
+      </p>
+      <ul class="recent-documents-list"></ul>
+      <p style="margin-bottom: 0.25em;border-bottom: 2px solid black;padding-bottom: 0.25em;">
+        <i class="far fa-bookmark" style="position:relative;top:2px;"></i> Bookmarked Documents
+      </p>
+      <ul class="bookmarked-documents-list"></ul>
+      <a href="#" class="modal-button" rel="modal:close">Close</a>
+    </div>
+  </div>
+
+<script>
+function updateOpenDialog() {
+  $('.recent-documents-list').empty();
+  $('.bookmarked-documents-list').empty();
+  var recentDocuments = localStorage.getItem('recentDocuments');
+  recentDocuments = recentDocuments ? JSON.parse(recentDocuments) : [];
+  recentDocuments.sort(function(a,b){
+    return new Date(b.modified) - new Date(a.modified);
+  });
+  recentDocuments = recentDocuments.slice(0,5);
+  recentDocuments.forEach(function(document){
+    var url = document.url;
+    var title = document.title;
+    var modified = document.modified;
+    $('.recent-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
+  })
+
+  var bookmarkedDocuments = localStorage.getItem('bookmarkedDocuments');
+  bookmarkedDocuments = bookmarkedDocuments ? JSON.parse(bookmarkedDocuments) : [];
+  bookmarkedDocuments.sort(function(a,b){
+    return new Date(b.modified) - new Date(a.modified);
+  });
+  bookmarkedDocuments.forEach(function(document){
+    var url = document.url;
+    var title = document.title;
+    var modified = document.modified;
+    $('.bookmarked-documents-list').append('<li><a href="'+url+'">'+title+'</a></li>');
+  })
+}
+updateOpenDialog();
+</script>
+
+</html>
