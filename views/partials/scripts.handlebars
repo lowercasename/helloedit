@@ -214,7 +214,9 @@ $('.open').click(function(event){
   this.blur(); // Manually remove focus from clicked link.
   saveDocument();
   updateOpenDialog();
-  $(html).appendTo('body').modal();
+  $.get(this.href, function(html) {
+    $(html).appendTo('.body').modal();
+  });
 })
 $('.delete').click(function(){
   if (window.confirm("Are you sure you want to delete this document? This is irreversible!")) {

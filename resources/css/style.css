@@ -445,3 +445,25 @@ code {
 .toggler {
   background-size: contain !important;
 }
+
+.dogcow {
+  display: none;
+  right: 100px;
+  position: fixed;
+  bottom: -3px;
+  z-index: 99999999;
+}
+
+.dogcow .cbbl {
+  display: none;
+  position: absolute;
+  top: -65px;
+  left: -41px;
+  box-shadow: 0 -3px #fff,0 -6px #000,3px 0 #fff,3px -3px #000,6px 0 #000,0 3px #fff,0 6px #000,-3px 0 #fff,-3px 3px #000,-6px 0 #000,-3px -3px #000,3px 3px #000;
+  font-weight: 400;
+  font-family: 'ChiKareGo2', monospace;
+  font-size: 24px;
+}
+.dogcow .cbbl::after {
+  box-shadow:  -3px 0 #000,3px 0 #000,3px 3px #fff,0 3px #000,6px 3px #000,3px 6px #000,6px 6px #000;
+}

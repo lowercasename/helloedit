@@ -28,6 +28,15 @@ function updateOpenDialog() {
   })
 }
 
+var konami = new Konami(function() {
+  var statupChime = new Audio('audio/si.mp3');
+  statupChime.play();
+  $(".dogcow").slideDown(2000);
+  $('.dogcow img').click(function(){
+    $('.cbbl').toggle();
+  })
+});
+
 $('.action-button')
 .mousedown(function(){
   $(this).addClass("active")
@@ -49,7 +58,6 @@ $('.toggler')
 .mouseleave(function(){
   $(this).css({"color":"black","background":"white"});
 })
-
 
 updateOpenDialog();
 </script>
