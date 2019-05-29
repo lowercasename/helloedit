@@ -95,19 +95,23 @@ function updateLocalStorage(list, operation = "add"){
   }
 }
 
+var editorFontFamily = localStorage.getItem('editorFontFamily');
+var editorFontSize = localStorage.getItem('editorFontSize');
+editorFontFamily = (editorFontFamily === null ? 'Fira Sans' : editorFontFamily);
+editorFontSize = (editorFontSize === null ? '19px' : editorFontSize);
+$('.CodeMirror-scroll').css({'font-family':editorFontFamily,'font-size':editorFontSize});
+$('.selector').val(editorFontFamily);
+
 $(function() {
   updateLocalStorage('recentDocuments');
   $('.autosave').html("&nbsp;")
   window.setInterval(function(){
     saveDocument();
   }, 30000);
-  // titleWidth = $('.title').text().length * 11
-  $('.title').css({"width": titleWidth.toString() + "px"});
-  // $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left': '-20px', 'text-indent': '20px'});
 });
 
 easyMDE.codemirror.on("change", function(){
-	// $('.CodeMirror-line:has(.cm-formatting-quote)').css({'margin-left':'-20px', 'text-indent':'20px'});
+
 });
 
 $('.title').bind('keypress', function (event) {
@@ -234,5 +238,31 @@ $('.quit').click(function(){
 })
 $('.bookmark').click(function(){
   updateLocalStorage('bookmarkedDocuments')
+})
+
+$('.selector').change(function(){
+  if (this.value === 'Fira Sans'){
+    editorFontSize = '19px';
+    $('.CodeMirror-scroll').css({'font-family':'Fira Sans','font-size':'19px'});
+  }
+  else if (this.value === 'Fira Mono'){
+    editorFontSize = '18px';
+    $('.CodeMirror-scroll').css({'font-family':'Fira Mono','font-size':'18px'});
+  }
+  else if (this.value === 'TimesNewPixel'){
+    editorFontSize = '24px';
+    $('.CodeMirror-scroll').css({'font-family':'TimesNewPixel','font-size':'22px'});
+  }
+  else if (this.value === 'Aventure'){
+    editorFontSize = '22px';
+    $('.CodeMirror-scroll').css({'font-family':'Aventure','font-size':'22px'});
+  }
+  else if (this.value === 'Tamzen'){
+    editorFontSize = '22px';
+    $('.CodeMirror-scroll').css({'font-family':'Tamzen','font-size':'20px'});
+  }
+  easyMDE.codemirror.refresh();
+  localStorage.setItem('editorFontFamily', this.value);
+  localStorage.setItem('editorFontSize', editorFontSize)
 })
 </script>

@@ -5,6 +5,36 @@
     font-weight: 500;
     font-style: normal;
 }
+@font-face {
+    font-family: 'FindersKeepers';
+    src: url('../fonts/FindersKeepers.woff2') format('woff2'),
+        url('../fonts/FindersKeepers.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'TimesNewPixel';
+    src: url('../fonts/TimesNewPixel.woff2') format('woff2'),
+        url('../fonts/TimesNewPixel.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aventure';
+    src: url('../fonts/Aventure.woff2') format('woff2'),
+        url('../fonts/Aventure.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tamzen';
+    src: url('../fonts/Tamzen.woff2') format('woff2'),
+        url('../fonts/Tamzen.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
 
 
 html {
@@ -12,9 +42,9 @@ html {
   font-size: 19px;
   line-height: 1.45;
 }
-p {margin-bottom: 1.48  em;}
+p {margin-bottom: 1.48em;}
 h1, h2, h3, h4, h5 {
-  margin: 2.75rem 0 1rem;
+  margin: 2.75em 0 1em;
   font-weight: 600;
   line-height: 1.15;
 }
@@ -231,7 +261,7 @@ main {
   margin-right: auto;
 }
 .editor-preview blockquote > p {
-  padding: 0 2rem;
+  padding: 0 2em;
 }
 .cm-link {
   color: black !important;
@@ -335,7 +365,7 @@ main {
   margin-top: 0;
 }
 .modal-body p:not(:last-of-type) {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 .modal-body a,
 .modal-body a:active,
@@ -375,7 +405,7 @@ main {
   display: none;
 }
 .cm-header, .cm-formatting-header {
-  font-size: 1rem !important;
+  font-size: 1em !important;
   line-height: 1.45 !important;
   text-decoration: underline;
 }
@@ -385,17 +415,17 @@ main {
 .cm-formatting, .cm-quote.cm-formatting {
   color: #c7c5c5 !important;
 }
-.cm-quote.cm-formatting {
+/* .cm-quote.cm-formatting {
   font-weight: 300;
-}
+} */
 .cm-quote {
   color: #666 !important;
   font-style: normal !important;
   font-weight: 300;
 }
-.cm-quote.cm-strong {
+/* .cm-quote.cm-strong {
   font-weight: 500 !important;
-}
+} */
 .cm-quote.cm-em {
   font-style: italic !important;
 }
@@ -405,11 +435,14 @@ main {
 .cm-comment {
   background: white !important;
   font-family: 'Fira Mono';
-  font-size: smaller;
+  font-size: 15.8px;
 }
 code {
   font-family: 'Fira Mono';
-  font-size: smaller;
+  font-size: 15.8px;
+}
+.editor-preview pre {
+  margin-bottom: 1.48em;
 }
 .editor-statusbar .words::before {
   content: '' !important;
@@ -466,4 +499,29 @@ code {
 }
 .dogcow .cbbl::after {
   box-shadow:  -3px 0 #000,3px 0 #000,3px 3px #fff,0 3px #000,6px 3px #000,3px 6px #000,6px 6px #000;
+}
+
+.selector {
+  border: 2px solid black;
+  height: 26px;
+  font-family: 'FindersKeepers',monospace;
+  font-size: 24px;
+  margin-right: 15px;
+  box-shadow: 2px 2px black;
+  padding: 0;
+  background: url('/images/select-button.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-position: 125px;
+  width: 150px;
+  position: relative;
+  top: -1px;
+  padding-bottom: 2px;
+}
+
+select::-ms-expand {
+    display: none;
 }

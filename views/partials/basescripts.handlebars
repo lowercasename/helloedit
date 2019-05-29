@@ -59,5 +59,27 @@ $('.toggler')
   $(this).css({"color":"black","background":"white"});
 })
 
+$('.CodeMirror-simplescroll-vertical::before')
+.mousedown(function(){
+  $(this).css({"background":"url('images/arrow-up-pressed.png')"})
+})
+.mouseup(function(){
+  $(this).css({"background":"url('images/arrow-up.png')"})
+})
+.mouseleave(function(){
+  $(this).css({"background":"url('images/arrow-up.png')"})
+})
+
+$('.CodeMirror-simplescroll-vertical::after')
+.mousedown(function(){
+  $(this).css({"background":"url('images/arrow-down-pressed.png')"})
+})
+.mouseup(function(){
+  $(this).css({"background":"url('images/arrow-down.png')"})
+})
+.mouseleave(function(){
+  $(this).css({"background":"url('images/arrow-down.png')"})
+})
+
 updateOpenDialog();
 </script>
