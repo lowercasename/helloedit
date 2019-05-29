@@ -429,7 +429,7 @@ main {
 .cm-quote.cm-em {
   font-style: italic !important;
 }
-.cm-formatting-list {
+.cm-formatting-list, .cm-formatting-link, .cm-formatting-link-string {
   color: black !important;
 }
 .cm-comment {
