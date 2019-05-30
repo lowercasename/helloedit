@@ -21,9 +21,9 @@
 }
 
 @font-face {
-    font-family: 'Pxlvetica';
-    src: url('../fonts/Pxlvetica.woff2') format('woff2'),
-        url('../fonts/Pxlvetica.woff') format('woff');
+    font-family: 'Calvert';
+    src: url('../fonts/Calvert.woff2') format('woff2'),
+        url('../fonts/Calvert.woff') format('woff');
     font-weight: 500;
     font-style: normal;
 }
