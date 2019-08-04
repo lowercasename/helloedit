@@ -1,4 +1,100 @@
 <script>
+
+var pomodoro = {
+    started: false,
+    interval: null,
+    timerContainer: null,
+    state: null,
+    init : function(){
+      var self = this;
+      this.timerContainer = document.querySelector('#timer');
+      this.interval = setInterval(function(){
+        self.intervalCallback.apply(self);
+      }, 1000);
+      $('.pomodoro').on('click', function(){
+          var state = $(this).attr('data-state');
+          if (state == 'running') {
+              self.stopTimer.apply(self);
+              $(this).attr('data-state', 'stopped');
+              $(this).html('<i class="fas fa-stopwatch"></i>')
+          } else if (state == 'stopped') {
+              self.startWork.apply(self);
+              $(this).attr('data-state', 'running');
+              $(this).html('<i class="far fa-stop-circle"></i>')
+          }
+      });
+    },
+    resetVariables : function(minutes, started){
+      this.seconds = minutes * 60;
+      this.started = started;
+      if (this.started == false) {
+          this.parseTime(this.seconds)
+      }
+    },
+    startWork: function() {
+      this.resetVariables(15, true);
+    },
+    startShortBreak : function(){
+      this.resetVariables(5, true);
+    },
+    startLongBreak : function(){
+      this.resetVariables(15, true);
+    },
+    stopTimer : function(){
+      $('#timer').attr('data-mode', 'work');
+      this.resetVariables(15, false);
+    },
+    parseTime : function(seconds){
+        this.displayMinutes = (seconds / 60) | 0;
+        this.displaySeconds = (seconds % 60) | 0;
+        this.formatTime(this.displayMinutes, this.displaySeconds)
+    },
+    formatTime : function(minutes, seconds){
+        this.displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+        this.displaySeconds = seconds < 10 ? "0" + seconds : seconds;
+        this.updateDom();
+    },
+    updateDom : function(){
+      var displayMode = $('#timer').attr('data-mode').charAt(0).toUpperCase() + $('#timer').attr('data-mode').slice(1).replace('-', ' ');
+      this.timerContainer.innerHTML = displayMode + ': ' + this.displayMinutes + ':' + this.displaySeconds;
+    },
+    switchTimer: function() {
+        var mode = $('#timer').attr('data-mode');
+        if (mode == 'work') {
+            $('#timer').attr('data-mode', 'short-break');
+            this.startShortBreak.apply(this);
+        } else if (mode == 'short-break') {
+            $('#timer').attr('data-mode', 'work');
+            this.startWork.apply(this);
+        }
+    },
+    intervalCallback : function(){
+      if(!this.started) return false;
+      if(this.seconds == 0) {
+          this.timerComplete();
+          return;
+      }
+      this.seconds--;
+      this.parseTime(this.seconds)
+    },
+    timerComplete : function(){
+      console.log("Timer complete!")
+      var mode = $('#timer').attr('data-mode');
+      alertModal = $('#timer-complete-modal');
+      alertModal.find('.modal-current-timer').html(mode.replace('-', ' '));
+      if (mode == 'work') {
+          alertModal.find('.modal-next-timer').html('for a break');
+      } else if (mode == 'short-break') {
+          alertModal.find('.modal-next-timer').html('to get to work');
+      }
+      var alertChime = new Audio('audio/sosumi.mp3');
+      alertChime.play();
+      $('#timer-complete-modal').modal();
+      this.started = false;
+      this.switchTimer();
+    }
+};
+
 var easyMDE = new EasyMDE({
   autoDownloadFontAwesome: false,
   autofocus: true,
@@ -105,6 +201,8 @@ $('.selector').val(editorFontFamily);
 $(function() {
   updateLocalStorage('recentDocuments');
   $('.autosave').html("&nbsp;")
+  $('.words').after('<span id="timer" data-mode="work"></span>');
+  pomodoro.init();
   window.setInterval(function(){
     saveDocument();
   }, 30000);

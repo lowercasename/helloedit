@@ -3,7 +3,6 @@
     <div class="close-button-wrapper">
       <div class="close-button toggler"><i class="fas fa-caret-up"></i></div>
     </div>
-    <!-- <input type="text" class="title" placeholder="Untitled 1" maxlength="50" value="{{ document.title }}"></input> -->
     <div class="title" contenteditable="true" content="plaintext-only">{{document.title}}</div>
     <div class="minimise-button-wrapper">
       <div class="minimise-button toggler"><i class="fas fa-caret-up"></i></div>
@@ -17,11 +16,11 @@
     <div class="action-button bookmark"><i class="far fa-bookmark"></i></div>
     <div class="action-button delete"><i class="far fa-trash-alt"></i></div>
     <div class="action-spacer"></div>
+    <div class="action-button pomodoro" data-state="stopped"><i class="fas fa-stopwatch"></i></div>
     <div class="action-button fullscreen"><i class="fas fa-expand-arrows-alt"></i></div>
     <div class="action-button quit"><i class="fas fa-power-off"></i></div>
     <div class="action-spacer"></div>
     <a class="action-button info" href="#info-modal" rel="modal:open"><i class="fas fa-info"></i></a>
-    <!-- <input id="file-import" type="file"/> -->
   </section>
   <main class="editor-container">
     <textarea class="editor">{{ document.content }}</textarea>
