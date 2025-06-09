@@ -1,0 +1,11 @@
+services:
+  helloedit:
+    container_name: helloedit
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:1984"
+    volumes:
+      - ./data:/app/data
+    restart: always
